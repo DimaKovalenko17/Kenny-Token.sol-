@@ -1,9 +1,30 @@
-// SPDX-License-Identifier: GPL-3.0
-pragma solidity >=0.7.0 <0.9.0;
-import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+// Learn more: https://solidity.readthedocs.io/en/v0.5.10/layout-of-source-files.html#pragma
+pragma solidity >=0.7.3;
 
-contract MyToken is ERC20 {
-    constructor () ERC20 ("Kenny Coin", "Ken") {
-        _mint(msg.sender, 100000 * 10 ** decimals());
+
+contract Register {
+    string public github;
+    address public owner;
+
+    struct Referral {
+        address referralAddress;
+        string referralString;
+    }
+
+    Referral[] public referrals;
+
+    constructor() {
+        github = "DimaKovalenko17";
+        owner = msg.sender;
+    }
+
+    function addReferral(address _referralAddress, string memory _referralString) public {
+        require(msg.sender == owner, "Only the owner can call this function");
+        Referral memory newReferral = Referral(_referralAddress, _referralString);
+        referrals.push(newReferral);
+    }
+
+    function totalReferrals() public view returns (uint256) {
+        return referrals.length;
     }
 }
